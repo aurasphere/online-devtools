@@ -1,0 +1,2 @@
+// Needed for node-jose dependency (browserify issue when importing module)
+module.exports = {"browser": true}
