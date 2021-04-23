@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import Header from "../components/header";
+import jwt_decode from "jwt-decode";
+
 var jose = require('node-jose');
 var JSONPretty = require('react-json-pretty');
 var JSONPrettyTheme = require('react-json-pretty/dist/acai');
@@ -38,6 +40,11 @@ function JweDecrypterPage() {
         switch (tokenType) {
             case "INVALID": return "is-invalid";
             case "JWT":
+                if (errorKey) {
+                    return "is-invalid";
+                } else {
+                    return "is-valid";
+                }
             case "JWE": return "is-valid";
             default: return "";
         }
@@ -52,28 +59,24 @@ function JweDecrypterPage() {
                     <label for="jwe">JWT/JWE</label>
                     <textarea id="jwe" onChange={onTokenChange}
                         className={`form-control ${tokenInputClass()}`}
-                        rows="5" placeholder="JWT/JWE" />
+                        rows="5" placeholder="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJNWS1BUFAiLCJjbGFpbS0xIjoidmFsdWUtMSJ9.6Hv6cDrcgR3Lx74VNtVBA4dcl0KCTN9GBlmaqmaM1_w" />
                     <div class="valid-feedback">{tokenType}</div>
-                    <div class="invalid-feedback">INVALID TOKEN</div>
-                    <label for="key">Key</label>
-                    <input id="key" type="text" onChange={onKeyChange}
-                        className={`form-control ${errorKey ? "is-invalid" : ""}`} placeholder="Key" />
-                    <div class="invalid-feedback">INVALID KEY</div>
+                    <div class="invalid-feedback">INVALID {(tokenType && tokenType !== "INVALID") ? tokenType.toUpperCase() : "TOKEN"}</div>
                     <br />
-                    <br />
+                    {tokenType !== "JWT" &&
+                        <div>
+                            <label for="key">Key</label>
+                            <input id="key" type="text" onChange={onKeyChange}
+                                className={`form-control ${errorKey ? "is-invalid" : ""}`} placeholder="ncLcTSiOET5XteiwCNbnSZJUtGHDxt22" />
+                            <div class="invalid-feedback">INVALID KEY OR TOKEN</div>
+                            <br />
+                            <br />
+                        </div>
+                    }
                     {(decodedTokenPayload || decodedTokenHeaders) &&
                         <div>
                             <div class="row justify-content-center">
                                 <h3>Decrypted token</h3>
-                            </div>
-                            <div class="row justify-content-center">
-                                <div class="col-md-5 col-sm-12">
-                                    
-                                </div>
-                                <div class="col-1"></div>
-                                <div class="col-md-5 col-sm-12">
-                                   
-                                </div>
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-md-5 col-sm-12 p-0">
@@ -95,6 +98,9 @@ function JweDecrypterPage() {
 }
 
 async function decodeToken(token, key) {
+    if (token === "") {
+       return ["", "", "", false];
+    }
     let tokenType;
     let decodedToken;
     let decodedHeaders;
@@ -102,7 +108,7 @@ async function decodeToken(token, key) {
     switch (token.split(".").length) {
         case 3:
             tokenType = "JWT";
-            decodedToken = await decodeJwt(token, key);
+            [decodedToken, decodedHeaders, isError] = await decodeJwt(token);
             break;
         case 5:
             tokenType = "JWE";
@@ -115,13 +121,19 @@ async function decodeToken(token, key) {
     return [tokenType, decodedToken, decodedHeaders, isError];
 }
 
-async function decodeJwt(token, key) {
-    const { payload, protectedHeader } = []
-        ;
-    //      rsa_key = Jose.Utils.importRsaPublicKey(rsa_key, "RSA-OAEP-256");
-    //       encrypt = new JoseJWE.Encrypter(crypto , rsa_key);
-    //await jwtDecrypt(token, key);
-    return payload;
+async function decodeJwt(token) {
+    let payload = "";
+    let headers = "";
+    let isError = false;
+    try {
+        payload = jwt_decode(token);
+        headers = jwt_decode(token, { header: true });
+    } catch (err) {
+        console.log("Error: malformed token " + err);
+        return ["", "", true];
+    }
+
+    return [payload, headers, isError];
 }
 
 async function decodeJwe(token, key) {
@@ -131,12 +143,11 @@ async function decodeJwe(token, key) {
     let isError = false;
     try {
         const decrypted = await jose.JWE.createDecrypt(jwkKey).decrypt(token);
-        console.log(decrypted);
-        payload = decrypted.payload.toString()
-        headers = decrypted.header
+        payload = decrypted.payload.toString();
+        headers = decrypted.header;
     } catch (err) {
-        isError = true;
         console.log("Error: is the key wrong? " + err);
+        return ["", "", true];
     }
 
     return [payload, headers, isError];
