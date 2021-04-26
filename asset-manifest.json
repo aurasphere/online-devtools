@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/online-devtools/static/js/main.836761a1.chunk.js",
-    "main.js.map": "/online-devtools/static/js/main.836761a1.chunk.js.map",
-    "runtime-main.js": "/online-devtools/static/js/runtime-main.de9d3798.js",
-    "runtime-main.js.map": "/online-devtools/static/js/runtime-main.de9d3798.js.map",
-    "static/js/2.f5a05c53.chunk.js": "/online-devtools/static/js/2.f5a05c53.chunk.js",
-    "static/js/2.f5a05c53.chunk.js.map": "/online-devtools/static/js/2.f5a05c53.chunk.js.map",
+    "main.js": "/online-devtools/static/js/main.5f863f97.chunk.js",
+    "main.js.map": "/online-devtools/static/js/main.5f863f97.chunk.js.map",
+    "runtime-main.js": "/online-devtools/static/js/runtime-main.c083559c.js",
+    "runtime-main.js.map": "/online-devtools/static/js/runtime-main.c083559c.js.map",
+    "static/js/2.7e0bffc9.chunk.js": "/online-devtools/static/js/2.7e0bffc9.chunk.js",
+    "static/js/2.7e0bffc9.chunk.js.map": "/online-devtools/static/js/2.7e0bffc9.chunk.js.map",
     "index.html": "/online-devtools/index.html",
-    "static/js/2.f5a05c53.chunk.js.LICENSE.txt": "/online-devtools/static/js/2.f5a05c53.chunk.js.LICENSE.txt"
+    "static/js/2.7e0bffc9.chunk.js.LICENSE.txt": "/online-devtools/static/js/2.7e0bffc9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.de9d3798.js",
-    "static/js/2.f5a05c53.chunk.js",
-    "static/js/main.836761a1.chunk.js"
+    "static/js/runtime-main.c083559c.js",
+    "static/js/2.7e0bffc9.chunk.js",
+    "static/js/main.5f863f97.chunk.js"
   ]
 }
