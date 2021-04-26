@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import Header from "../components/header";
-import jwt_decode from "jwt-decode";
 
 var jose = require('node-jose');
 var JSONPretty = require('react-json-pretty');
@@ -125,11 +124,12 @@ async function decodeJwt(token) {
     let payload = "";
     let headers = "";
     let isError = false;
+    const tokenComponents = token.split(".");
     try {
-        payload = jwt_decode(token);
-        headers = jwt_decode(token, { header: true });
+        headers = JSON.stringify(JSON.parse(atob(tokenComponents[0])));
+        payload = JSON.stringify(JSON.parse(atob(tokenComponents[1])));
     } catch (err) {
-        console.log("Error: malformed token " + err);
+        console.log("Error during JWT decoding: " + err);
         return ["", "", true];
     }
 
