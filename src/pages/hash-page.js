@@ -55,7 +55,7 @@ export default function HashPage() {
   const onEncodingChange = (e) => setEncodingIdx(e.target.value);
   const onAlgChange = (e) => setAlgIdx(e.target.value);
 
-  const hashInput = () => {
+  const transformInput = () => {
     const alg = supportedAlgs[algIdx];
     const encoding = supportedEncodings[encodingIdx].value;
     const hasher = require("crypto-js/" + alg.value);
@@ -74,7 +74,7 @@ export default function HashPage() {
     </option>
   ));
 
-  useEffect(hashInput, [input, algIdx, encodingIdx]);
+  useEffect(transformInput, [input, algIdx, encodingIdx]);
 
   return (
     <PageLayout
