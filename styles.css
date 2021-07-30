@@ -1,0 +1,24 @@
+.header {
+  min-height: 10vh;
+}
+
+.page-content {
+  min-height: 80vh;
+}
+
+.footer {
+  min-height: 10vh;
+}
+
+.layout {
+  display: flex;
+  height: 100%;
+}
+
+.layout .content {
+  flex-grow: 1;
+}
+
+.arial {
+  font-family: Arial;
+}
