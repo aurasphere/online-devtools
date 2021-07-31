@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PageLayout from "../layout/page-layout";
+import PageLayout from "./page-layout";
 import Base64 from "crypto-js/enc-base64";
 import Hex from "crypto-js/enc-hex";
 
@@ -60,11 +60,7 @@ export default function HmacPage() {
   useEffect(transformInput, [input, algIdx, encodingIdx, key]);
 
   return (
-    <PageLayout
-      headerText={pageName}
-      color="bg-primary"
-      linkColor="text-danger"
-    >
+    <PageLayout headerText={pageName}>
       <form>
         <div className="form-row">
           <div className="col">
@@ -94,16 +90,13 @@ export default function HmacPage() {
         <div className="form-group">
           <input
             type="text"
-            id="key"
             onChange={onKeyChange}
             className="form-control"
-            rows="5"
             placeholder="Secret key"
           />
         </div>
         <div className="form-group">
           <textarea
-            id="input"
             onChange={onInputChange}
             className="form-control"
             rows="5"
@@ -111,7 +104,6 @@ export default function HmacPage() {
           />
           <br />
           <textarea
-            id="output"
             rows="5"
             readOnly
             value={output}

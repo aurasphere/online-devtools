@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import PageLayout from "../layout/page-layout";
+import PageLayout from "./page-layout";
 
 export const path = "/url";
 export const pageName = "URL Encoder/Decoder";
@@ -36,11 +36,7 @@ export default function UrlPage() {
   const inputClass = () => (errorMessage ? "is-invalid" : "");
 
   return (
-    <PageLayout
-      headerText={pageName}
-      color="bg-primary"
-      linkColor="text-danger"
-    >
+    <PageLayout headerText={pageName}>
       <form>
         <div className="row form-group">
           <div className="col-0 col-md-9"></div>
@@ -59,7 +55,6 @@ export default function UrlPage() {
 
         <div className="form-group">
           <textarea
-            id="input"
             onChange={onInputChange}
             className={`form-control ${inputClass()}`}
             rows="5"
@@ -69,7 +64,6 @@ export default function UrlPage() {
           <br />
 
           <textarea
-            id="output"
             rows="5"
             readOnly
             value={output}

@@ -7,10 +7,12 @@ import CipherPage, { path as cipherPath } from "./pages/cipher-page";
 import JwePage, { path as jwePath } from "./pages/jwe-page";
 import UrlPage, { path as urlPath } from "./pages/url-page";
 import Base64Page, { path as base64Path } from "./pages/base64-page";
+import JsonPage, { path as jsonPath } from "./pages/json-page";
+import Pbkdf2Page, { path as pbkdf2Path } from "./pages/pbkdf2-page";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <Router basename={process.env.HOMEPAGE}>
       <Switch>
         <Route path={base64Path}>
           <Base64Page />
@@ -26,6 +28,12 @@ ReactDOM.render(
         </Route>
         <Route path={cipherPath}>
           <CipherPage />
+        </Route>
+        <Route path={jsonPath}>
+          <JsonPage />
+        </Route>
+        <Route path={pbkdf2Path}>
+          <Pbkdf2Page />
         </Route>
         <Route path={jwePath}>
           <JwePage />

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import PageLayout from "../layout/page-layout";
+import PageLayout from "./page-layout";
 
 var jose = require("node-jose");
-var JSONPretty = require("react-json-pretty");
-var JSONPrettyTheme = require("react-json-pretty/dist/acai");
+const JSONPretty = require("react-json-pretty");
+const JSONPrettyTheme = require("react-json-pretty/dist/acai");
 
 export const path = ["/", "/jwe", "/jwt"];
 export const pageName = "JWT/JWE Decrypter";
@@ -96,11 +96,7 @@ export default function JwePage() {
   }
 
   return (
-    <PageLayout
-      headerText={pageName}
-      color="bg-primary"
-      linkColor="text-danger"
-    >
+    <PageLayout headerText={pageName}>
       <form>
         <div className="form-group">
           <textarea
@@ -138,7 +134,7 @@ export default function JwePage() {
                   <JSONPretty
                     data={decodedTokenHeaders}
                     theme={JSONPrettyTheme}
-                  ></JSONPretty>
+                  />
                 </div>
                 <div className="col-1"></div>
                 <div className="col-md-5 col-sm-12 p-0">
@@ -146,7 +142,7 @@ export default function JwePage() {
                   <JSONPretty
                     data={decodedTokenPayload}
                     theme={JSONPrettyTheme}
-                  ></JSONPretty>
+                  />
                 </div>
               </div>
             </div>

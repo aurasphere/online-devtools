@@ -1,13 +1,9 @@
 .header {
-  min-height: 10vh;
+  height: 11.5vh;
 }
 
 .page-content {
   min-height: 80vh;
-}
-
-.footer {
-  min-height: 10vh;
 }
 
 .layout {
@@ -21,4 +17,10 @@
 
 .arial {
   font-family: Arial;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }

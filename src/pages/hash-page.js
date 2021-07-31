@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PageLayout from "../layout/page-layout";
+import PageLayout from "./page-layout";
 import Base64 from "crypto-js/enc-base64";
 import Hex from "crypto-js/enc-hex";
 
@@ -77,11 +77,7 @@ export default function HashPage() {
   useEffect(transformInput, [input, algIdx, encodingIdx]);
 
   return (
-    <PageLayout
-      headerText={pageName}
-      color="bg-primary"
-      linkColor="text-danger"
-    >
+    <PageLayout headerText={pageName}>
       <form>
         <div className="form-row">
           <div className="col">
@@ -110,7 +106,6 @@ export default function HashPage() {
         <br />
         <div className="form-group">
           <textarea
-            id="input"
             onChange={onInputChange}
             className="form-control"
             rows="5"
@@ -118,7 +113,6 @@ export default function HashPage() {
           />
           <br />
           <textarea
-            id="output"
             rows="5"
             readOnly
             value={output}
