@@ -8,45 +8,34 @@ const JSONPrettyTheme = require("react-json-pretty/dist/acai");
 export const path = ["/", "/jwe", "/jwt"];
 export const pageName = "JWT/JWE Decrypter";
 export default function JwePage() {
-  const [tokenType, setTokenType] = useState("");
+  const [tokenType, setTokenType] = useState(null);
+  const [errorKey, setErrorKey] = useState(false);
+  const [errorToken, setErrorToken] = useState(false);
   const [decodedTokenPayload, setDecodedTokenPayload] = useState("");
   const [decodedTokenHeaders, setDecodedTokenHeaders] = useState("");
   const [token, setToken] = useState("");
   const [key, setKey] = useState("");
-  const [errorKey, setErrorKey] = useState(false);
 
   const onTokenChange = (e) => setToken(e.target.value);
   const onKeyChange = (e) => setKey(e.target.value);
 
-  useEffect(decodeToken, [token, key]);
-
-  const tokenInputClass = () => {
-    switch (tokenType) {
-      case "INVALID":
-        return "is-invalid";
-      case "JWT":
-        if (errorKey) {
-          return "is-invalid";
-        } else {
-          return "is-valid";
-        }
-      case "JWE":
-        return "is-valid";
-      default:
-        return "";
-    }
+  const resetFields = () => {
+    setDecodedTokenHeaders("");
+    setDecodedTokenPayload("");
+    setErrorKey(false);
+    setErrorToken(false);
+    setTokenType(null);
   };
 
-  function decodeToken() {
-    if (token === "") {
-      setTokenType("");
-      setDecodedTokenHeaders("");
-      setDecodedTokenPayload("");
-      setErrorKey(false);
+  const decodeToken = () => {
+    if (!token) {
+      resetFields();
+      return;
     }
     switch (token.split(".").length) {
       case 3:
         setTokenType("JWT");
+        setErrorKey(false);
         decodeJwt();
         break;
       case 5:
@@ -54,28 +43,29 @@ export default function JwePage() {
         decodeJwe();
         break;
       default:
-        setTokenType("INVALID");
+        resetFields();
+        setErrorToken(true);
         break;
     }
-  }
+  };
 
-  function decodeJwt() {
+  const decodeJwt = () => {
     try {
       const tokenComponents = token.split(".");
       const headers = JSON.stringify(JSON.parse(atob(tokenComponents[0])));
       const payload = JSON.stringify(JSON.parse(atob(tokenComponents[1])));
       setDecodedTokenHeaders(headers);
       setDecodedTokenPayload(payload);
-      setErrorKey(false);
+      setErrorToken(false);
     } catch (error) {
       console.log("Error during JWT decoding: " + error);
       setDecodedTokenHeaders("");
       setDecodedTokenPayload("");
-      setErrorKey(true);
+      setErrorToken(true);
     }
-  }
+  };
 
-  async function decodeJwe() {
+  const decodeJwe = async () => {
     const jwkKey = await jose.JWK.asKey({
       k: jose.util.base64url.encode(key),
       kty: "oct",
@@ -93,7 +83,9 @@ export default function JwePage() {
       setDecodedTokenPayload("");
       setErrorKey(true);
     }
-  }
+  };
+
+  useEffect(decodeToken, [token, key]);
 
   return (
     <PageLayout headerText={pageName}>
@@ -101,17 +93,16 @@ export default function JwePage() {
         <div className="form-group">
           <textarea
             onChange={onTokenChange}
-            className={`form-control ${tokenInputClass()}`}
+            className={`form-control ${
+              !token ? "" : errorToken ? "is-invalid" : "is-valid"
+            }`}
             rows="5"
             placeholder="JWT/JWE"
           />
           <div className="valid-feedback">{tokenType}</div>
-          <div className="invalid-feedback">
-            INVALID{" "}
-            {tokenType && tokenType !== "INVALID"
-              ? tokenType.toUpperCase()
-              : "TOKEN"}
-          </div>
+          <div className="invalid-feedback">{`INVALID ${
+            tokenType ? tokenType.toUpperCase() : "TOKEN"
+          }`}</div>
           <br />
           {tokenType !== "JWT" && (
             <div>
