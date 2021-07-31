@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import HashPage, { path as hashPath } from "./pages/hash-page";
 import HmacPage, { path as hmacPath } from "./pages/hmac-page";
 import CipherPage, { path as cipherPath } from "./pages/cipher-page";
@@ -12,7 +12,7 @@ import Pbkdf2Page, { path as pbkdf2Path } from "./pages/pbkdf2-page";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Router basename={process.env.HOMEPAGE}>
+    <Router>
       <Switch>
         <Route path={base64Path}>
           <Base64Page />
